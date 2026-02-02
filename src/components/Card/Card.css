@@ -1,0 +1,421 @@
+.card-aluno {
+  background-color: var(--card-bg);
+  color: var(--text-main);
+  padding: 16px;
+  border-radius: 12px;
+  width: 220px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  position: relative;
+  border: 1px solid transparent;
+}
+
+
+
+/* Efeito de Hover (Passar o mouse) */
+.card-aluno:hover {
+  background-color: var(--card-hover);
+  transform: translateY(-10px);
+}
+
+/* --- ESTADO ATIVO (QUANDO ESTÁ TOCANDO) --- */
+.card-aluno.active {
+  background-color: var(--card-hover); /* CORRIGIDO: Usa a variável do tema */
+  border-color: var(--primary-color);
+  box-shadow: 0 0 25px rgba(211, 47, 47, 0.4);
+  transform: scale(1.05);
+}
+
+.capa-album {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  margin-bottom: 15px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.capa-album img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+/* Zoom na foto quando estiver tocando */
+.card-aluno.active .capa-album img {
+  transform: scale(1.1);
+  filter: saturate(1.2);
+}
+
+.play-btn {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  color: #fff; /* Texto do botão sempre branco para contraste no vermelho */
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Mostrar botão no hover ou se estiver tocando */
+.card-aluno:hover .play-btn,
+.card-aluno.active .play-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-aluno.active .play-btn {
+  background-color: var(--text-main); /* Alterna conforme o tema */
+  color: var(--bg-color);
+  animation: pulse 2s infinite;
+}
+
+/* --- INFORMAÇÕES --- */
+.info-aluno h3 {
+  font-size: 1.1rem;
+  margin: 0 0 5px 0;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.musica-tema {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 15px;
+  display: block;
+}
+
+.badge-skill {
+  display: inline-block;
+  background-color: rgba(211, 47, 47, 0.1);
+  color: var(--primary-color);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: 1px solid rgba(211, 47, 47, 0.2);
+}
+
+/* --- ANIMAÇÃO DE PULSAR --- */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(211, 47, 47, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); }
+}
+
+/* Overlay (Fundo atrás do modal) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* Escurece um pouco menos para o blur brilhar */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(8px);
+}
+
+/* Conteúdo do Modal */
+.modal-content {
+  background: var(--bg-lighter); /* CORRIGIDO: Agora fica branco no tema claro */
+  color: var(--text-main);      /* CORRIGIDO: Texto fica escuro no tema claro */
+  width: 90%;
+  max-width: 500px;
+  border-radius: 15px;
+  padding: 30px;
+  position: relative;
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  animation: modalEntrada 0.3s ease-out;
+  transition: background-color 0.3s ease;
+}
+
+@keyframes modalEntrada {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: var(--text-main); /* CORRIGIDO: Ícone X acompanha o tema */
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.modal-foto {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary-color);
+}
+
+.modal-apelido {
+  color: var(--primary-color);
+  font-style: italic;
+}
+
+.modal-frase {
+  font-size: 1.2rem;
+  text-align: center;
+  color: var(--text-main);
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.modal-body h4 {
+  color: var(--primary-color);
+  margin-top: 15px;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+.modal-body p {
+  color: var(--text-dim);
+}
+
+@media (max-width: 600px) {
+  .card-aluno {
+    width: 100%; /* Ocupa a largura da coluna do grid */
+    padding: 10px;
+  }
+
+  .play-btn {
+    opacity: 1; /* Sempre visível no celular */
+    transform: translateY(0);
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+
+  .modal-content {
+    padding: 20px;
+    width: 95%;
+  }
+
+  .modal-header {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* Container do Slider de Volume */
+.volume-control-overlay {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  background: rgba(0, 0, 0, 0.6);
+  padding: 5px 10px;
+  border-radius: 20px;
+  opacity: 0;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+/* Mostra o volume no hover do card ou se estiver tocando */
+.card-aluno:hover .volume-control-overlay,
+.card-aluno.active .volume-control-overlay {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.volume-control-overlay {
+  position: absolute;
+  top: 10px; /* Garante que ele fique no topo da imagem */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  padding: 8px;
+  border-radius: 20px;
+  z-index: 10;
+  display: flex; /* Garante que o input apareça */
+  align-items: center;
+}
+
+.volume-slider {
+  cursor: pointer;
+  width: 80px;
+  accent-color: var(--primary-color); /* Atalho moderno para mudar a cor do slider */
+}
+
+.equalizer-overlay {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 5px;
+  border-radius: 4px;
+  pointer-events: none; /* Não atrapalha o clique no card */
+}
+
+/* Use o CSS do equalizador que te mandei na mensagem anterior aqui também! */
+
+.footer-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Afasta a skill do volume */
+  margin-top: 10px;
+  gap: 8px;
+}
+
+.volume-inline-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.08); /* Fundo sutil */
+  padding: 4px 8px;
+  border-radius: 20px;
+  flex: 1; /* Permite que o controle cresça um pouco */
+  max-width: 100px; /* Mas não muito para não esmagar a skill */
+}
+
+.volume-icon {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* Slider fino estilo Spotify */
+.volume-slider-mini {
+  width: 100%;
+  height: 3px;
+  background: #555;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}
+
+.volume-slider-mini::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 10px;
+  background: var(--primary-color, #ff4444); /* Usa sua cor principal */
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.volume-slider-mini::-webkit-slider-thumb:hover {
+  transform: scale(1.3);
+  box-shadow: 0 0 5px rgba(255, 68, 68, 0.5);
+}
+
+/* Efeito de Vidro no Card */
+.card-aluno {
+  background: rgba(255, 255, 255, 0.05); /* Branco bem transparente */
+  backdrop-filter: blur(12px); /* O desfoque atrás do card */
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Borda fina para dar profundidade */
+  border-radius: 15px;
+  padding: 15px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  
+  /* Animação de Entrada */
+  animation: fadeInScale 0.5s ease backwards;
+}
+
+/* Faz os cards aparecerem um de cada vez (stagger effect) */
+.card-aluno:nth-child(odd) { animation-delay: 0.1s; }
+.card-aluno:nth-child(even) { animation-delay: 0.2s; }
+
+.card-aluno:hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary-color); /* Realça a borda no hover */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Keyframe para a entrada suave */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Efeito de Vidro no Modal */
+.modal-content {
+  background: rgba(20, 20, 20, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 1);
+  /* ... resto do seu estilo de modal */
+}
+
+.seta-carrossel {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.capa-album:hover .seta-carrossel {
+  opacity: 1;
+}
+
+.esquerda { left: 5px; }
+.direita { right: 5px; }
+
+.indicadores-carrossel {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+}
+
+.ponto {
+  width: 6px;
+  height: 6px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 50%;
+}
+
+.ponto.ativo {
+  background: var(--primary-color);
+  width: 12px;
+  border-radius: 4px;
+}
