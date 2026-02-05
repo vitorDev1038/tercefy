@@ -1,0 +1,109 @@
+.memoria-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+}
+
+.memoria-card {
+    background-color: var(--bg-lighter);
+    padding: 40px;
+    /* Reduzi um pouco o padding para equilibrar o visual */
+    border-radius: 15px;
+    border: 1px solid #333;
+    width: 90%;
+    /* Garante que não cole na tela em celulares */
+    max-width: 450px;
+    /* Aumentei levemente para os botões respirarem melhor */
+    text-align: center;
+}
+
+.memoria-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    /* Aumentei o espaço entre os elementos do formulário */
+    align-items: center;
+    margin-top: 25px;
+    /* Separa o form do título principal */
+}
+
+#file-upload {
+    display: none;
+}
+
+/* PADRONIZAÇÃO DO BOTÃO DE UPLOAD */
+.custom-file-upload {
+    width: 100%;
+    padding: 16px;
+    /* Mesma altura do botão vermelho */
+    background-color: var(--bg-color);
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    /* Garante que o texto fique centralizado */
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    /* Fundamental para o width: 100% funcionar igual ao outro */
+    font-size: 1rem;
+}
+
+.custom-file-upload:hover {
+    border-color: var(--primary-color);
+    background-color: #1a1a1a;
+}
+
+/* PADRONIZAÇÃO DO BOTÃO ETERNIZAR */
+.btn-eternizar {
+    width: 100%;
+    padding: 16px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    text-transform: uppercase;
+    /* Deixa igual à sua imagem */
+    cursor: pointer;
+    transition: 0.3s;
+    box-sizing: border-box;
+    /* Mantém o tamanho idêntico ao de upload */
+}
+
+.btn-eternizar:hover {
+    background-color: #b71c1c;
+    transform: translateY(-2px);
+    /* Efeito sutil de elevação */
+}
+
+/* SEPARAÇÃO DOS TEXTOS */
+.memoria-subtitle {
+    display: block;
+    margin-top: 15px;
+    color: var(--text-dim);
+    font-size: 1.1rem;
+}
+
+.btn-voltar-link {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    /* Removi o underline padrão para um visual mais moderno */
+}
+
+.btn-voltar-link:hover {
+    color: #fff;
+    /* Muda para branco para destacar */
+    transform: scale(1.05);
+}

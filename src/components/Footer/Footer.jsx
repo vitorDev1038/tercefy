@@ -1,15 +1,23 @@
+import { useNavigate } from 'react-router-dom';
 import './Footer.css';
 import logo from '../../assets/logo-tercefy.png';
 
 function Footer() {
   const anoAtual = new Date().getFullYear();
+  const navigate = useNavigate();
+
+  const handleSecretClick = () => {
+    navigate('/memorias');
+  };
 
   return (
     <footer className="footer">
       <div className="container footer-content">
-        
         <div className="footer-brand">
-          <img src={logo} alt="Tercefy Logo" className="footer-logo" />
+          {/* O SEGREDO AGORA ESTÁ AQUI */}
+          <button className="logo-btn-secreto" onClick={handleSecretClick} title="Acesso Restrito">
+            <img src={logo} alt="Tercefy Logo" className="footer-logo" />
+          </button>
           <p>A playlist oficial da turma que codifica o futuro.</p>
         </div>
 
@@ -26,9 +34,7 @@ function Footer() {
         <div className="footer-feedback">
           <h4>Feedback da Turma</h4>
           <p>O que acha da turma?</p>
-          <a href="seu-link-do-google-forms" target="_blank" rel="noreferrer" className="btn-feedback">
-            Deixar Depoimento
-          </a>
+          <a href="#" className="btn-feedback">Deixar Depoimento</a>
         </div>
       </div>
 
