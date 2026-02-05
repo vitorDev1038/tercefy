@@ -79,4 +79,7 @@ def serve_image(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # O Render usa a variável de ambiente PORT, se não existir, usa 5000
+    port = int(os.environ.get("PORT", 5000))
+    # host='0.0.0.0' é obrigatório para o servidor aceitar conexões externas
+    app.run(host='0.0.0.0', port=port)
