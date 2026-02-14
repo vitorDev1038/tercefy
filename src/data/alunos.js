@@ -242,18 +242,6 @@ export const alunosData = [
     sobre: "Descrição do post do instagram.",
   },
   {
-    id: 22,
-    nome: "Luca",
-    apelido: "balieiro",
-    musicaNome: "Ausência - VEIGH",
-    audioSrc: "/musicas/musica-luca.mp3",
-    foto: "/fotos/luca.jpeg",
-    fotoCrianca: "/fotos/luca-crianca.jpeg",
-    skillPrincipal: "",
-    frase: "",
-    sobre: "Descrição do post do instagram.",
-  },
-  {
     id: 23,
     nome: "Manuele",
     apelido: "manu",
