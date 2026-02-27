@@ -1,13 +1,17 @@
 import os
 import sqlite3
+import time
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+# Permite que seu site na Vercel acesse a API
 CORS(app)
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Na Vercel, o único lugar "escrevível" (temporário) é a pasta /tmp
+# ATENÇÃO: Os dados sumirão se o servidor desligar. Para a apresentação, funciona!
+BASE_DIR = "/tmp"
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
 DB_PATH = os.path.join(BASE_DIR, 'tercefy.db')
 
@@ -21,7 +25,6 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-# Inicializa o banco sem travas
 def init_db():
     conn = get_db_connection()
     conn.execute('''
@@ -34,6 +37,7 @@ def init_db():
     conn.commit()
     conn.close()
 
+# Inicializa o banco toda vez que a função "acorda"
 init_db()
 
 @app.route('/api/memorias', methods=['GET'])
@@ -45,6 +49,8 @@ def get_memorias():
         cursor.execute('SELECT * FROM memorias ORDER BY id ASC')
         rows = cursor.fetchall()
         return jsonify([dict(row) for row in rows])
+    except Exception as e:
+        return jsonify({"erro": str(e)}), 500
     finally:
         if conn: conn.close()
 
@@ -57,29 +63,27 @@ def add_memoria():
         
         file = request.files['foto']
         filename = secure_filename(file.filename)
-        # Adiciona um timestamp no nome para evitar arquivos duplicados
-        import time
         filename = f"{int(time.time())}_{filename}"
         
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        img_url = f"http://localhost:5000/uploads/{filename}"
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+        
+        # AJUSTE: O link agora é relativo à URL do site atual
+        img_url = f"/api/uploads/{filename}"
         
         conn = get_db_connection()
         conn.execute('INSERT INTO memorias (legenda, imagem_url) VALUES (?, ?)', 
                     ("Memória Tercefy", img_url))
         conn.commit()
-        return jsonify({"status": "sucesso"}), 201
+        return jsonify({"status": "sucesso", "url": img_url}), 201
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
     finally:
-        if conn: conn.close() # ESSENCIAL: Libera o banco para a próxima foto
+        if conn: conn.close()
 
-@app.route('/uploads/<filename>')
+@app.route('/api/uploads/<filename>')
 def serve_image(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-if __name__ == '__main__':
-    # O Render usa a variável de ambiente PORT, se não existir, usa 5000
-    port = int(os.environ.get("PORT", 5000))
-    # host='0.0.0.0' é obrigatório para o servidor aceitar conexões externas
-    app.run(host='0.0.0.0', port=port)
+# Necessário para a Vercel reconhecer o app
+app.debug = False
