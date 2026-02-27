@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../../supabase'; // Ajuste o caminho se necessário
+import { supabase } from '../../supabase'; // Verifique se o arquivo chama-se supabase.js
 import './memorias.css';
 
 function Memorias({ onUploadSuccess }) {
@@ -24,22 +24,22 @@ function Memorias({ onUploadSuccess }) {
         setEnviando(true);
 
         try {
-            // 1. Gerar nome único
+            // 1. Nome único para o arquivo
             const nomeArquivo = `${Date.now()}_${foto.name}`;
 
-            // 2. Upload para o Storage do Supabase
+            // 2. Upload para o Storage (Bucket 'fotos')
             const { data: uploadData, error: uploadError } = await supabase.storage
                 .from('fotos')
                 .upload(nomeArquivo, foto);
 
             if (uploadError) throw uploadError;
 
-            // 3. Pegar URL pública
+            // 3. Pegar URL pública da imagem
             const { data: publicUrlData } = supabase.storage
                 .from('fotos')
                 .getPublicUrl(nomeArquivo);
 
-            // 4. Salvar na Tabela do Supabase (NÃO USA MAIS FETCH LOCALHOST)
+            // 4. Salvar na Tabela 'memorias' (Sem localhost!)
             const { error: dbError } = await supabase
                 .from('memorias')
                 .insert([{ 
@@ -49,6 +49,7 @@ function Memorias({ onUploadSuccess }) {
 
             if (dbError) throw dbError;
 
+            // Avisa o App.jsx para recarregar as fotos
             if (onUploadSuccess) await onUploadSuccess();
 
             alert("Memória eternizada no Supabase! ✨");
@@ -65,24 +66,37 @@ function Memorias({ onUploadSuccess }) {
     return (
         <div className="memoria-container">
             <div className="memoria-card">
-                <h2>Nova Memória 📸</h2>
+                <h2>Nova Memória (V2) 📸</h2>
+                <p className="memoria-subtitle">A versão (V2) usa conexão direta com Supabase.</p>
+
                 <form onSubmit={handleSubmit} className="memoria-form">
                     <div className="upload-section">
                         <label htmlFor="file-upload" className="custom-file-upload">
                             {foto ? `✅ ${foto.name}` : "Escolher Foto"}
                         </label>
-                        <input id="file-upload" type="file" accept="image/*" onChange={handleFileChange} required />
+                        <input 
+                            id="file-upload" 
+                            type="file" 
+                            accept="image/*" 
+                            onChange={handleFileChange} 
+                            required 
+                        />
                     </div>
+
                     {preview && (
                         <div className="preview-container">
                             <img src={preview} alt="Preview" className="img-preview" />
                         </div>
                     )}
+
                     <button type="submit" className="btn-eternizar" disabled={enviando}>
-                        {enviando ? "SALVANDO..." : "ETERNIZAR MOMENTO"}
+                        {enviando ? "CONECTANDO AO SUPABASE..." : "ETERNIZAR MOMENTO"}
                     </button>
                 </form>
-                <button onClick={() => navigate('/')} className="btn-voltar-link">← Cancelar</button>
+
+                <button onClick={() => navigate('/')} className="btn-voltar-link">
+                    ← Cancelar e voltar
+                </button>
             </div>
         </div>
     );
