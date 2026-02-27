@@ -2,6 +2,9 @@ import { useState, useRef, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.css';
 
+// Conexão com Supabase
+import { supabase } from './supabaseClient'; 
+
 // Componentes
 import Navbar from "./components/NavBar/Navbar.jsx";
 import Card from "./components/Card/Card.jsx";
@@ -24,15 +27,18 @@ function App() {
   const trilhaRef = useRef(null);
   const fadeIntervalRef = useRef(null);
 
+  // NOVA FUNÇÃO: Buscando dados direto do Supabase
   const fetchMemorias = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/memorias?t=${new Date().getTime()}`);
-      if (response.ok) {
-        const data = await response.json();
-        setMemoriasDB(data);
-      }
+      const { data, error } = await supabase
+        .from('memorias')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      if (data) setMemoriasDB(data);
     } catch (error) {
-      console.error("Erro ao buscar memórias:", error);
+      console.error("Erro ao buscar memórias no Supabase:", error);
     }
   };
 
@@ -176,7 +182,7 @@ function App() {
                 </div>
               ))
             ) : (
-              <p style={{ textAlign: 'center', width: '100%', opacity: 0.5 }}>Carregando fotos...</p>
+              <p style={{ textAlign: 'center', width: '100%', opacity: 0.5 }}>Carregando momentos eternizados...</p>
             )}
           </div>
         </div>
