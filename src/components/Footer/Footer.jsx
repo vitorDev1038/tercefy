@@ -39,7 +39,7 @@ function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {anoAtual} Tercefy - Desenvolvido por alunos do <strong>SENAI & SESI</strong></p>
+        <p>&copy; {anoAtual} Tercefy - Desenvolvido por <strong>Vítor e Guilherme</strong></p>
       </div>
     </footer>
   );
