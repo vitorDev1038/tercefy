@@ -182,7 +182,7 @@ function App() {
                 </div>
               ))
             ) : (
-              <p style={{ textAlign: 'center', width: '100%', opacity: 0.5 }}>Carregando momentos eternizados...</p>
+              <p style={{ textAlign: 'center', width: '100%', opacity: 0.5 }}>Carregand momentos eternizados...</p>
             )}
           </div>
         </div>
