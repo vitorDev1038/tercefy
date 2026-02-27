@@ -27,7 +27,11 @@ function App() {
   const trilhaRef = useRef(null);
   const fadeIntervalRef = useRef(null);
 
-  // NOVA FUNÇÃO: Buscando dados direto do Supabase
+  // Função para verificar se o arquivo é vídeo
+  const isVideo = (url) => {
+    return url?.match(/\.(mp4|webm|ogg|mov)$/i) || url?.includes('video');
+  };
+
   const fetchMemorias = async () => {
     try {
       const { data, error } = await supabase
@@ -92,7 +96,6 @@ function App() {
     aluno.skillPrincipal.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Componente da Página Principal
   const Home = () => (
     <>
       <section id="home" className="hero">
@@ -103,6 +106,7 @@ function App() {
         </div>
       </section>
 
+      {/* Seção Sobre Omitida aqui para brevidade, mas deve ser mantida no seu código */}
       <section id="sobre" className="section-padding">
         <div className="container">
           <div className="sobre-grid-master">
@@ -135,7 +139,7 @@ function App() {
                   <p className="escaneie">Escaneie para ouvir a trilha Tercefy.</p>
                   <img src={qrCodeSpotify} alt="QR Code" className="qr-code-img" />
                 </div>
-                <a href="https://open.spotify.com" target="_blank" rel="noreferrer" className="btn-spotify-link">
+                <a href="https://spotify.com" target="_blank" rel="noreferrer" className="btn-spotify-link">
                   Abrir no Spotify
                 </a>
               </div>
@@ -174,15 +178,25 @@ function App() {
             {memoriasDB.length > 0 ? (
               memoriasDB.map((item) => (
                 <div key={item.id} className="galeria-item">
-                  <img
-                    src={item.imagem_url}
-                    alt="Memória"
-                    onError={(e) => { e.target.closest('.galeria-item').style.display = 'none'; }}
-                  />
+                  {isVideo(item.imagem_url) ? (
+                    <video 
+                      src={item.imagem_url} 
+                      className="media-item" 
+                      controls 
+                      preload="metadata"
+                    />
+                  ) : (
+                    <img
+                      src={item.imagem_url}
+                      alt="Memória"
+                      className="media-item"
+                      onError={(e) => { e.target.closest('.galeria-item').style.display = 'none'; }}
+                    />
+                  )}
                 </div>
               ))
             ) : (
-              <p style={{ textAlign: 'center', width: '100%', opacity: 0.5 }}>Carregand momentos eternizados...</p>
+              <p style={{ textAlign: 'center', width: '100%', opacity: 0.5 }}>Carregando momentos eternizados...</p>
             )}
           </div>
         </div>

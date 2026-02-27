@@ -328,3 +328,16 @@ body {
     width: 100%;
   }
 }
+
+.media-item {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Faz o vídeo e a imagem preencherem o quadrado sem distorcer */
+  border-radius: 8px;
+  display: block;
+}
+
+.galeria-item {
+  overflow: hidden;
+  background: #000; /* Fundo preto caso o vídeo seja menor que o container */
+}

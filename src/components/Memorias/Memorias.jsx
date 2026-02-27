@@ -4,13 +4,12 @@ import { supabase } from '../../supabase';
 import './memorias.css';
 
 function Memorias({ onUploadSuccess }) {
-    const [foto, setFoto] = useState(null);
+    const [arquivo, setArquivo] = useState(null); // Alterado de 'foto' para 'arquivo'
     const [preview, setPreview] = useState(null);
     const [enviando, setEnviando] = useState(false);
-    const [listaMemorias, setListaMemorias] = useState([]); // Estado para armazenar fotos existentes
+    const [listaMemorias, setListaMemorias] = useState([]);
     const navigate = useNavigate();
 
-    // Carregar fotos ao abrir a aba
     useEffect(() => {
         fetchMemorias();
     }, []);
@@ -26,23 +25,28 @@ function Memorias({ onUploadSuccess }) {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setFoto(file);
+            // Validação de tamanho (50MB limite Supabase Free)
+            if (file.size > 50 * 1024 * 1024) {
+                alert("O arquivo é muito grande! O limite é 50MB.");
+                return;
+            }
+            setArquivo(file);
             setPreview(URL.createObjectURL(file));
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!foto) return alert("Por favor, selecione uma foto!");
+        if (!arquivo) return alert("Por favor, selecione uma foto ou vídeo!");
         setEnviando(true);
 
         try {
-            const nomeArquivo = `${Date.now()}_${foto.name}`;
+            const nomeArquivo = `${Date.now()}_${arquivo.name}`;
 
             // 1. Upload Storage
             const { error: uploadError } = await supabase.storage
                 .from('fotos')
-                .upload(nomeArquivo, foto);
+                .upload(nomeArquivo, arquivo);
             if (uploadError) throw uploadError;
 
             // 2. Pegar URL
@@ -60,9 +64,9 @@ function Memorias({ onUploadSuccess }) {
             if (dbError) throw dbError;
 
             alert("Memória eternizada! ✨");
-            setFoto(null);
+            setArquivo(null);
             setPreview(null);
-            fetchMemorias(); // Atualiza a lista abaixo
+            fetchMemorias();
             if (onUploadSuccess) onUploadSuccess();
 
         } catch (error) {
@@ -72,50 +76,54 @@ function Memorias({ onUploadSuccess }) {
         }
     };
 
-    // FUNÇÃO PARA REMOVER FOTO
     const handleDeletar = async (id, url) => {
         if (!confirm("Deseja realmente excluir esta memória?")) return;
 
         try {
-            // Extrair o nome do arquivo da URL para deletar no Storage
             const nomeArquivo = url.split('/').pop();
-
-            // 1. Deletar do Storage
             await supabase.storage.from('fotos').remove([nomeArquivo]);
-
-            // 2. Deletar do Banco de Dados
-            const { error } = await supabase
-                .from('memorias')
-                .delete()
-                .eq('id', id);
+            const { error } = await supabase.from('memorias').delete().eq('id', id);
 
             if (error) throw error;
 
             alert("Memória removida!");
-            fetchMemorias(); // Atualiza a lista
+            fetchMemorias();
             if (onUploadSuccess) onUploadSuccess();
         } catch (error) {
             alert("Erro ao deletar: " + error.message);
         }
     };
 
+    // Função para verificar se a URL é de vídeo
+    const isVideo = (url) => {
+        return url?.match(/\.(mp4|webm|ogg|mov)$/i) || url?.includes('video');
+    };
+
     return (
         <div className="memoria-container">
             <div className="memoria-card">
-                <h2>Gerenciar Memórias 📸</h2>
+                <h2>Gerenciar Memórias 📸🎬</h2>
                 
-                {/* FORMULÁRIO DE ADICIONAR */}
                 <form onSubmit={handleSubmit} className="memoria-form">
                     <div className="upload-section">
                         <label htmlFor="file-upload" className="custom-file-upload">
-                            {foto ? `✅ ${foto.name}` : "Escolher Nova Foto"}
+                            {arquivo ? `✅ ${arquivo.name}` : "Escolher Foto ou Vídeo"}
                         </label>
-                        <input id="file-upload" type="file" accept="image/*" onChange={handleFileChange} />
+                        <input 
+                            id="file-upload" 
+                            type="file" 
+                            accept="image/*,video/*" 
+                            onChange={handleFileChange} 
+                        />  
                     </div>
 
                     {preview && (
                         <div className="preview-container">
-                            <img src={preview} alt="Preview" className="img-preview" />
+                            {arquivo?.type.startsWith('video') ? (
+                                <video src={preview} controls className="img-preview" />
+                            ) : (
+                                <img src={preview} alt="Preview" className="img-preview" />
+                            )}
                         </div>
                     )}
 
@@ -126,13 +134,16 @@ function Memorias({ onUploadSuccess }) {
 
                 <hr className="divisor" />
 
-                {/* LISTA DE REMOÇÃO */}
                 <div className="lista-remocao">
-                    <h3>Fotos Existentes</h3>
+                    <h3>Arquivos Existentes</h3>
                     <div className="mini-grid">
                         {listaMemorias.map((item) => (
                             <div key={item.id} className="item-remocao">
-                                <img src={item.imagem_url} alt="Thumbnail" />
+                                {isVideo(item.imagem_url) ? (
+                                    <video src={item.imagem_url} muted className="mini-media" />
+                                ) : (
+                                    <img src={item.imagem_url} alt="Thumbnail" className="mini-media" />
+                                )}
                                 <button 
                                     onClick={() => handleDeletar(item.id, item.imagem_url)}
                                     className="btn-deletar"
