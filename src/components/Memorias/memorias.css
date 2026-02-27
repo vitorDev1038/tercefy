@@ -154,3 +154,38 @@
 .btn-deletar:hover {
     background: red;
 }
+
+/* Container que segura a imagem de preview */
+.preview-container {
+    width: 100%;
+    max-width: 300px; /* Limita a largura máxima */
+    height: 200px;    /* Fixa uma altura para não empurrar o site todo */
+    margin: 20px auto;
+    border-radius: 12px;
+    overflow: hidden; /* Garante que a imagem não escape das bordas */
+    border: 2px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9f9f9;
+}
+
+/* A imagem em si dentro do container */
+.img-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Faz a imagem preencher o espaço sem distorcer */
+    display: block;
+}
+
+/* Ajuste no card para ele não crescer infinito */
+.memoria-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 500px; /* Mantém o card centralizado e elegante */
+    margin: 20px auto;
+    text-align: center;
+}
