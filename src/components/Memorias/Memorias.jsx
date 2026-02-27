@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../supabase'; // Certifique-se que o caminho está correto
 import './memorias.css';
 
 function Memorias({ onUploadSuccess }) {
     const [foto, setFoto] = useState(null);
-    const [preview, setPreview] = useState(null); // Para ver a foto antes de enviar
+    const [preview, setPreview] = useState(null); 
     const [enviando, setEnviando] = useState(false);
     const navigate = useNavigate();
 
-    // Função para lidar com a seleção da imagem
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             setFoto(file);
-            setPreview(URL.createObjectURL(file)); // Gera um link temporário para o preview
+            setPreview(URL.createObjectURL(file)); 
         }
     };
 
@@ -22,29 +22,48 @@ function Memorias({ onUploadSuccess }) {
         if (!foto) return alert("Por favor, selecione uma foto!");
 
         setEnviando(true);
-        const formData = new FormData();
-        formData.append('foto', foto);
 
         try {
-            const response = await fetch('http://localhost:5000/api/memorias', {
-                method: 'POST',
-                body: formData,
-            });
+            // 1. Gerar um nome único para a imagem para não sobrescrever
+            const nomeArquivo = `${Date.now()}_${foto.name}`;
 
-            if (response.ok) {
-                // ESSENCIAL: Avisa o App.jsx para buscar os dados novos antes de voltar
-                if (onUploadSuccess) {
-                    await onUploadSuccess();
-                }
+            // 2. Fazer o Upload para o Storage (Bucket 'fotos')
+            const { data: uploadData, error: uploadError } = await supabase.storage
+                .from('fotos')
+                .upload(nomeArquivo, foto);
 
-                alert("Memória eternizada com sucesso! ✨");
-                navigate('/'); // Volta para a Home
-            } else {
-                alert("Erro ao salvar no servidor. Verifique o console.");
+            if (uploadError) throw uploadError;
+
+            // 3. Pegar a URL pública da imagem que acabamos de subir
+            const { data: publicUrlData } = supabase.storage
+                .from('fotos')
+                .getPublicUrl(nomeArquivo);
+
+            const urlFinal = publicUrlData.publicUrl;
+
+            // 4. Salvar os dados na tabela 'memorias'
+            const { error: dbError } = await supabase
+                .from('memorias')
+                .insert([
+                    { 
+                        legenda: "Memória Tercefy", // Você pode adicionar um input de legenda depois
+                        imagem_url: urlFinal 
+                    }
+                ]);
+
+            if (dbError) throw dbError;
+
+            // Sucesso!
+            if (onUploadSuccess) {
+                await onUploadSuccess();
             }
+
+            alert("Memória eternizada no Supabase com sucesso! ✨");
+            navigate('/'); 
+
         } catch (error) {
-            console.error("Erro de conexão:", error);
-            alert("Não foi possível conectar ao servidor Python.");
+            console.error("Erro na operação:", error);
+            alert("Erro ao salvar: " + (error.message || "Verifique o console"));
         } finally {
             setEnviando(false);
         }
@@ -77,7 +96,7 @@ function Memorias({ onUploadSuccess }) {
                     )}
 
                     <button type="submit" className="btn-eternizar" disabled={enviando}>
-                        {enviando ? "ESTABELECENDO CONEXÃO..." : "ETERNIZAR MOMENTO"}
+                        {enviando ? "SALVANDO NO SUPABASE..." : "ETERNIZAR MOMENTO"}
                     </button>
                 </form>
 
