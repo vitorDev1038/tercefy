@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../../supabaseClient'; // Ajuste o caminho se necessário
+import { supabase } from '../../supabase'; // Ajuste o caminho se necessário
 import './memorias.css';
 
 function Memorias({ onUploadSuccess }) {
