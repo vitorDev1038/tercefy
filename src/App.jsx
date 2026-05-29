@@ -12,7 +12,7 @@ import Footer from './components/Footer/Footer';
 import Memorias from "./components/Memorias/Memorias.jsx";
 
 // Assets
-import logoGrande from './assets/logo-tercefy.png';
+import logoGrande from './assets/logo-tercethunder1.png';
 import { alunosData } from './data/alunos';
 import trilhaMemorial from './assets/trilha-memorial.mp3';
 import qrCodeSpotify from './assets/qrcodeSpotify.jpeg';
@@ -100,9 +100,9 @@ function App() {
     <>
       <section id="home" className="hero">
         <div className="hero-content">
-          <img src={logoGrande} alt="Logo Tercefy" className="logo-hero-animada" />
-          <p className="subtitle">Nossa trilha sonora está apenas começando.</p>
-          <a href="#sobre" className="btn-explorar">Descobrir mais</a>
+          <img src={logoGrande} alt="Logo TerceThunder" className="logo-hero-animada" />
+          <p className="subtitle">Como águias, voamos alto rumo ao futuro.</p>
+          <a href="#sobre" className="btn-explorar">Alçar voo</a>
         </div>
       </section>
 
@@ -112,22 +112,22 @@ function App() {
           <div className="sobre-grid-master">
             <div className="sobre-esquerda">
               <div className="texto-principal">
-                <h3>Por que Tercefy?</h3>
+                <h3>Por que TerceThunder?</h3>
                 <p>
-                  O nome <strong>Tercefy</strong> representa a nossa sincronia como turma.
-                  Unindo a essência do nosso último ano escolar com a inovação que o Desenvolvimento de Sistemas nos proporciona.
-                  Somos uma playlist viva, onde cada aluno traz uma nota essencial para compor a nossa harmonia.
+                  O nome <strong>TerceThunder</strong> representa nossa força e visão como águias.
+                  Unindo a essência do nosso último ano escolar com a potência que o Desenvolvimento de Sistemas nos proporciona.
+                  Somos águias que voam alto, onde cada aluno traz uma centelha de raio essencial para iluminar nosso caminho coletivo.
                 </p>
               </div>
 
               <div className="detalhes-tecnicos">
                 <div className="detalhe-card">
-                  <h4>Identidade e União</h4>
-                  <p>O Tercefy nasceu para eternizar nossa jornada no SENAI e no SESI, transformando conexões em código.</p>
+                  <h4>⚡ Visão de Águia</h4>
+                  <p>Como águias, enxergamos longe. O TerceThunder nasceu para eternizar nossa jornada no SENAI e SESI com precisão e foco.</p>
                 </div>
                 <div className="detalhe-card">
-                  <h4>Nossa Melodia</h4>
-                  <p>32 talentos únicos, focados em deixar um legado através da tecnologia e da colaboração.</p>
+                  <h4>🦅 Voo em Formação</h4>
+                  <p>32 águias únicas, voando juntas rumo ao futuro através da tecnologia e inovação.</p>
                 </div>
               </div>
             </div>
@@ -135,8 +135,8 @@ function App() {
             <div className="sobre-direita">
               <div className="qr-card-glass">
                 <div className="qr-content-top">
-                  <h3>Playlist Tercefy</h3>
-                  <p className="escaneie">Escaneie para ouvir a trilha Tercefy.</p>
+                  <h3>Playlist TerceThunder</h3>
+                  <p className="escaneie">Escaneie para ouvir a trilha TerceThunder.</p>
                   <img src={qrCodeSpotify} alt="QR Code" className="qr-code-img" />
                 </div>
                 <a href="https://spotify.com" target="_blank" rel="noreferrer" className="btn-spotify-link">

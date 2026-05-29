@@ -16,9 +16,9 @@ function Footer() {
         <div className="footer-brand">
           {/* O SEGREDO AGORA ESTÁ AQUI */}
           <button className="logo-btn-secreto" onClick={handleSecretClick} title="Acesso Restrito">
-            <img src={logo} alt="Tercefy Logo" className="footer-logo" />
+            <img src={logo} alt="TerceThunder Logo" className="footer-logo" />
           </button>
-          <p>A playlist oficial da turma que codifica o futuro.</p>
+          <p>Águias que voam alto e codificam o futuro com a velocidade do raio.</p>
         </div>
 
         <div className="footer-links">
@@ -39,7 +39,7 @@ function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {anoAtual} Tercefy - Desenvolvido por <strong>Vítor e Guilherme</strong></p>
+        <p>&copy; {anoAtual} TerceThunder - Desenvolvido por <strong>Vítor e Guilherme</strong></p>
       </div>
     </footer>
   );

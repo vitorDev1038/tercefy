@@ -23,7 +23,7 @@ function Navbar() {
     <nav className="navbar">
       <div className="nav-left-section">
         <div className="nav-logo">
-          <img src={logo} alt="Tercefy Logo" className="logo-img" />
+          <img src={logo} alt="TerceThunder Logo" className="logo-img" />
         </div>
 
         {/* Contador agora fixado à esquerda, logo após a logo */}

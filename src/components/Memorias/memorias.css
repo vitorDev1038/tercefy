@@ -9,14 +9,18 @@
 .memoria-card {
     background-color: var(--bg-lighter);
     padding: 40px;
-    /* Reduzi um pouco o padding para equilibrar o visual */
     border-radius: 15px;
     border: 1px solid #333;
     width: 90%;
-    /* Garante que não cole na tela em celulares */
     max-width: 450px;
-    /* Aumentei levemente para os botões respirarem melhor */
     text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme='light'] .memoria-card {
+    background-color: #ffffff;
+    border: 2px solid rgba(25, 118, 210, 0.3);
+    box-shadow: 0 8px 24px rgba(25, 118, 210, 0.15);
 }
 
 .memoria-form {
@@ -53,33 +57,57 @@
     font-size: 1rem;
 }
 
+[data-theme='light'] .custom-file-upload {
+    background-color: #ffffff;
+    color: var(--text-main);
+    border: 2px solid rgba(25, 118, 210, 0.3);
+}
+
 .custom-file-upload:hover {
     border-color: var(--primary-color);
     background-color: #1a1a1a;
+    box-shadow: 0 2px 10px rgba(33, 150, 243, 0.2);
+}
+
+[data-theme='light'] .custom-file-upload:hover {
+    background-color: #e3f2fd;
+    border-color: var(--accent-color);
+    box-shadow: 0 2px 10px rgba(245, 124, 0, 0.2);
 }
 
 /* PADRONIZAÇÃO DO BOTÃO ETERNIZAR */
 .btn-eternizar {
     width: 100%;
     padding: 16px;
-    background-color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
     color: #fff;
     border: none;
     border-radius: 8px;
     font-weight: bold;
     font-size: 1rem;
     text-transform: uppercase;
-    /* Deixa igual à sua imagem */
     cursor: pointer;
     transition: 0.3s;
     box-sizing: border-box;
-    /* Mantém o tamanho idêntico ao de upload */
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-eternizar::before {
+    content: '⚡';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    opacity: 0.8;
 }
 
 .btn-eternizar:hover {
-    background-color: #b71c1c;
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
     transform: translateY(-2px);
-    /* Efeito sutil de elevação */
+    box-shadow: 0 6px 20px rgba(255, 193, 7, 0.7);
 }
 
 /* SEPARAÇÃO DOS TEXTOS */
@@ -142,7 +170,7 @@
     position: absolute;
     top: 2px;
     right: 2px;
-    background: rgba(255, 0, 0, 0.8);
+    background: rgba(244, 67, 54, 0.9);
     color: white;
     border: none;
     border-radius: 4px;
@@ -152,7 +180,7 @@
 }
 
 .btn-deletar:hover {
-    background: red;
+    background: #d32f2f;
 }
 
 /* Container que segura a imagem de preview */
@@ -167,6 +195,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+[data-theme='light'] .preview-container {
+    border: 3px dashed rgba(25, 118, 210, 0.4);
+    background: rgba(227, 242, 253, 0.3);
 }
 
 /* A imagem em si dentro do container */

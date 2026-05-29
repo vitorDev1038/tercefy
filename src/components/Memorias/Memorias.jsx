@@ -58,7 +58,7 @@ function Memorias({ onUploadSuccess }) {
             const { error: dbError } = await supabase
                 .from('memorias')
                 .insert([{ 
-                    legenda: "Momento Tercefy", 
+                    legenda: "Momento TerceThunder", 
                     imagem_url: publicUrlData.publicUrl 
                 }]);
             if (dbError) throw dbError;
